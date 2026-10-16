@@ -934,9 +934,6 @@ float getOutputValueByHash(const int hash) {
 // transitionEventsCounter
 		case 1163075685:
 			return engine->outputChannels.transitionEventsCounter;
-// slowAdcScanCount
-		case -900042688:
-			return engine->outputChannels.slowAdcScanCount;
 // cltResistance
 		case -1105741991:
 			return engine->outputChannels.cltResistance;
@@ -952,27 +949,6 @@ float getOutputValueByHash(const int hash) {
 // instantRpmRange
 		case -748456478:
 			return engine->outputChannels.instantRpmRange;
-// dashLeftTurn
-		case 604222649:
-			return engine->outputChannels.dashLeftTurn;
-// dashRightTurn
-		case 1097341932:
-			return engine->outputChannels.dashRightTurn;
-// dashCheckEngine
-		case 148196857:
-			return engine->outputChannels.dashCheckEngine;
-// dashHighBeams
-		case -1287820947:
-			return engine->outputChannels.dashHighBeams;
-// dashParkingBrake
-		case -1638049706:
-			return engine->outputChannels.dashParkingBrake;
-// engine
-		case -75965445:
-			return engine->outputChannels.engine;
-// sdCardMode
-		case 545972859:
-			return engine->outputChannels.sdCardMode;
 // baseDwell
 		case -1777838088:
 			return engine->ignitionState.baseDwell;
@@ -1382,9 +1358,6 @@ float getOutputValueByHash(const int hash) {
 // injectorHwIssue
 		case -1237512821:
 			return engine->fuelComputer.injectorHwIssue;
-// dtAutotuneActive
-		case 408698318:
-			return engine->module<InjectorDeadtimeAutotune>()->dtAutotuneActive;
 #endif
 #if EFI_ENGINE_CONTROL && EFI_BOOST_CONTROL
 // isTpsInvalid

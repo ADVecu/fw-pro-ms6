@@ -375,7 +375,7 @@ struct output_channels_s {
 	uint16_t canReadCounter = (uint16_t)0;
 	/**
 	 * @@GAUGE_NAME_FUEL_TPS_EXTRA@@
-	 * units: ms/frac
+	 * units: ms
 	 * offset 78
 	 */
 	scaled_channel<int16_t, 300, 1> tpsAccelFuel = (int16_t)0;
@@ -487,7 +487,7 @@ struct output_channels_s {
 	 * @@GAUGE_NAME_DETECTED_GEAR@@
 	 * offset 120
 	 */
-	int8_t detectedGear = (int8_t)0;
+	uint8_t detectedGear = (uint8_t)0;
 	/**
 	 * offset 121
 	 */
@@ -1612,11 +1612,11 @@ struct output_channels_s {
 	 */
 	uint8_t mapPerCylinder[MAX_CYLINDER_COUNT] = {};
 	/**
-	 * ECU: Slow ADC complete scans
-	 * units: N
+	 * need 4 byte alignment
+	 * units: units
 	 * offset 910
 	 */
-	uint16_t slowAdcScanCount = (uint16_t)0;
+	uint8_t alignmentFill_at_910[2] = {};
 	/**
 	 * CLT: measured resistance
 	 * units: Ohm
@@ -1654,126 +1654,8 @@ struct output_channels_s {
 	 * offset 930
 	 */
 	uint8_t alignmentFill_at_930[2] = {};
-	/**
-	 * Dash: Left turn
-	offset 932 bit 0 */
-	bool dashLeftTurn : 1 {};
-	/**
-	 * Dash: Right turn
-	offset 932 bit 1 */
-	bool dashRightTurn : 1 {};
-	/**
-	 * Dash: Check engine
-	offset 932 bit 2 */
-	bool dashCheckEngine : 1 {};
-	/**
-	 * Dash: High beams
-	offset 932 bit 3 */
-	bool dashHighBeams : 1 {};
-	/**
-	 * Dash: Parking brake
-	offset 932 bit 4 */
-	bool dashParkingBrake : 1 {};
-	/**
-	offset 932 bit 5 */
-	bool unusedBit_341_5 : 1 {};
-	/**
-	offset 932 bit 6 */
-	bool unusedBit_341_6 : 1 {};
-	/**
-	offset 932 bit 7 */
-	bool unusedBit_341_7 : 1 {};
-	/**
-	offset 932 bit 8 */
-	bool unusedBit_341_8 : 1 {};
-	/**
-	offset 932 bit 9 */
-	bool unusedBit_341_9 : 1 {};
-	/**
-	offset 932 bit 10 */
-	bool unusedBit_341_10 : 1 {};
-	/**
-	offset 932 bit 11 */
-	bool unusedBit_341_11 : 1 {};
-	/**
-	offset 932 bit 12 */
-	bool unusedBit_341_12 : 1 {};
-	/**
-	offset 932 bit 13 */
-	bool unusedBit_341_13 : 1 {};
-	/**
-	offset 932 bit 14 */
-	bool unusedBit_341_14 : 1 {};
-	/**
-	offset 932 bit 15 */
-	bool unusedBit_341_15 : 1 {};
-	/**
-	offset 932 bit 16 */
-	bool unusedBit_341_16 : 1 {};
-	/**
-	offset 932 bit 17 */
-	bool unusedBit_341_17 : 1 {};
-	/**
-	offset 932 bit 18 */
-	bool unusedBit_341_18 : 1 {};
-	/**
-	offset 932 bit 19 */
-	bool unusedBit_341_19 : 1 {};
-	/**
-	offset 932 bit 20 */
-	bool unusedBit_341_20 : 1 {};
-	/**
-	offset 932 bit 21 */
-	bool unusedBit_341_21 : 1 {};
-	/**
-	offset 932 bit 22 */
-	bool unusedBit_341_22 : 1 {};
-	/**
-	offset 932 bit 23 */
-	bool unusedBit_341_23 : 1 {};
-	/**
-	offset 932 bit 24 */
-	bool unusedBit_341_24 : 1 {};
-	/**
-	offset 932 bit 25 */
-	bool unusedBit_341_25 : 1 {};
-	/**
-	offset 932 bit 26 */
-	bool unusedBit_341_26 : 1 {};
-	/**
-	offset 932 bit 27 */
-	bool unusedBit_341_27 : 1 {};
-	/**
-	offset 932 bit 28 */
-	bool unusedBit_341_28 : 1 {};
-	/**
-	offset 932 bit 29 */
-	bool unusedBit_341_29 : 1 {};
-	/**
-	offset 932 bit 30 */
-	bool unusedBit_341_30 : 1 {};
-	/**
-	offset 932 bit 31 */
-	bool unusedBit_341_31 : 1 {};
-	/**
-	 * Engine
-	 * offset 936
-	 */
-	uint8_t engine = (uint8_t)0;
-	/**
-	 * SD: Mount mode
-	 * units: code
-	 * offset 937
-	 */
-	uint8_t sdCardMode = (uint8_t)0;
-	/**
-	 * need 4 byte alignment
-	 * units: units
-	 * offset 938
-	 */
-	uint8_t alignmentFill_at_938[2] = {};
 };
-static_assert(sizeof(output_channels_s) == 940);
+static_assert(sizeof(output_channels_s) == 932);
 
 // end
 // this section was generated automatically by rusEFI tool config_definition_base-all.jar based on (unknown script) console/binary/output_channels.txt
