@@ -1,8 +1,7 @@
 name: Update rusEFI Reference
 
+# rusEFI is pinned to a release tag in ext/rusefi: run manually only
 on:
-  schedule:
-    - cron: '5 17 * * *' # update rusEFI reference daily at 5:05 pm
   workflow_dispatch:
 
 jobs:
