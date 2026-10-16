@@ -242,8 +242,9 @@ static void customBoardConfigOverrides() {
 
 	// DRV8421 driven by four push-pull outputs -> J102.A1/A2/B1/B2
 	engineConfiguration->useRawOutputToDriveIdleStepper = true;
-	engineConfiguration->stepper_raw_output[0] = Gpio::E4;
-	engineConfiguration->stepper_raw_output[1] = Gpio::E3;
+	// coil A polarity swapped (IN2/IN1) so that a higher idle position opens the MS6.0 valve
+	engineConfiguration->stepper_raw_output[0] = Gpio::E3;
+	engineConfiguration->stepper_raw_output[1] = Gpio::E4;
 	engineConfiguration->stepper_raw_output[2] = Gpio::E2;
 	engineConfiguration->stepper_raw_output[3] = Gpio::B8;
 }
