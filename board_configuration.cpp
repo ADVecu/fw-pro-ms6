@@ -5,6 +5,7 @@
 #include "board_overrides.h"
 #include "defaults.h"
 #include "settings.h"
+#include "mpu_util.h"
 
 void setupBoardHardwareTestOverrides();
 
@@ -21,6 +22,26 @@ static void customBoardInitHardwareEarly() {
 // PE10 goes high-Z; PA0 (key via Q201/Q202, or CAN wake via U201) wakes the MCU.
 static void customBoardOnStandBy() {
 	powerEnablePin.setValue(0);
+}
+
+// The F4 IWDG cannot be stopped and keeps running in standby, so ~500 ms after mcu_standby()
+// it resets the MCU. Runs before rusEFI arms the IWDG: if that reset hit us while in standby
+// and nothing asked to wake up (no PA0 wakeup event, PA0 low), go straight back to standby.
+// The IWDG is not running in this boot, so this time the MCU stays asleep until PA0 rises.
+static void customBoardPreHalInit() {
+	RCC->APB1ENR |= RCC_APB1ENR_PWREN;
+	RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
+	(void)RCC->AHB1ENR;
+
+	bool wasInStandby = (PWR->CSR & PWR_CSR_SBF) != 0;
+	bool wakeRequested = (PWR->CSR & PWR_CSR_WUF) != 0 || (GPIOA->IDR & GPIO_IDR_IDR_0) != 0;
+
+	if (wasInStandby && !wakeRequested && getMCUResetCause() == Reset_Cause_IWatchdog) {
+		stm32_standby();
+	}
+
+	// fresh flags for the next standby / wakeup decision
+	PWR->CR |= PWR_CR_CSBF | PWR_CR_CWUF;
 }
 
 // Battery voltage is sensed on 12V_SW (key line), so it doubles as the key-on signal.
@@ -186,6 +207,7 @@ static void customBoardConfigOverrides() {
 void setup_custom_board_overrides() {
 	setupBoardHardwareTestOverrides();
 
+	custom_board_preHalInit = customBoardPreHalInit;
 	custom_board_InitHardwareEarly = customBoardInitHardwareEarly;
 	custom_board_onBoardStandBy = customBoardOnStandBy;
 	custom_board_DefaultConfiguration = customBoardDefaultConfiguration;
