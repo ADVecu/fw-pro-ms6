@@ -15,6 +15,9 @@ include $(BOARD_DIR)/meta-info.env
 # PD14 is the ETB PWM on PRO-MS6, critical LED is D206 red on PD4
 DDEFS += -DLED_CRITICAL_ERROR_BRAIN_PIN=Gpio::D4
 
+# status LEDs are active-low: +3.3V -> RN201 -> LED -> MCU pin
+DDEFS += -DLED_PIN_MODE=OM_INVERTED
+
 # EGT chip
 #un-comment to enable
 #DDEFS += -DEFI_MAX_31855=TRUE
