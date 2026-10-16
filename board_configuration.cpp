@@ -13,31 +13,75 @@ void setupBoardHardwareTestOverrides();
 // +3.3VA (on-board wideband). The MCU itself is always powered from 12V_Perm.
 static OutputPin powerEnablePin;
 
+// PWR/PA0 state captured in preHalInit, printed once the console is up
+static uint32_t bootPwrCsr;
+static bool bootPa0High;
+
 static void customBoardInitHardwareEarly() {
 	powerEnablePin.initPin("Power EN", Gpio::E10);
 	powerEnablePin.setValue(1);
+
+	efiPrintf("PRO-MS6 boot: SBF=%d WUF=%d PA0=%d resetCause=%s",
+		(int)((bootPwrCsr & PWR_CSR_SBF) != 0), (int)((bootPwrCsr & PWR_CSR_WUF) != 0), (int)bootPa0High,
+		getMCUResetCause(getMCUResetCause()));
 }
 
-// Called by Lua mcu_standby() right before STM32 standby. R306 pulls /Power/EN low once
-// PE10 goes high-Z; PA0 (key via Q201/Q202, or CAN wake via U201) wakes the MCU.
+// Enter STM32 standby with PA0 rising edge as the only wakeup source. Unlike stm32_standby()
+// this never returns: if WFI falls through (pending wakeup flag) it simply tries again.
+[[noreturn]] static void enterStandby() {
+	__disable_irq();
+	SysTick->CTRL = 0;
+
+	// Stop CAN: a frame nobody ACKs (wideband already unpowered) is retransmitted forever,
+	// and every frame pulses PA0 through U201/D202, which would wake us right back up.
+	RCC->APB1RSTR |= RCC_APB1RSTR_CAN1RST | RCC_APB1RSTR_CAN2RST;
+	RCC->APB1RSTR &= ~(RCC_APB1RSTR_CAN1RST | RCC_APB1RSTR_CAN2RST);
+
+	// A pending interrupt (USB, CAN, ADC, timers...) makes WFI fall through even with IRQs
+	// masked, so standby would never be entered. Disable and clear everything.
+	for (size_t i = 0; i < sizeof(NVIC->ICER) / sizeof(NVIC->ICER[0]); i++) {
+		NVIC->ICER[i] = 0xFFFFFFFF;
+		NVIC->ICPR[i] = 0xFFFFFFFF;
+	}
+	EXTI->IMR = 0;
+	EXTI->EMR = 0;
+	EXTI->PR = 0xFFFFFFFF;
+	SCB->ICSR = SCB_ICSR_PENDSTCLR_Msk | SCB_ICSR_PENDSVCLR_Msk;
+
+	RCC->APB1ENR |= RCC_APB1ENR_PWREN;
+	SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk;
+	PWR->CR |= PWR_CR_PDDS;
+	PWR->CSR |= PWR_CSR_EWUP;
+
+	while (true) {
+		PWR->CR |= PWR_CR_CSBF | PWR_CR_CWUF;
+		__DSB();
+		__WFI();
+	}
+}
+
+// Called by Lua mcu_standby(). R306 pulls /Power/EN low once PE10 goes high-Z;
+// PA0 (key via Q201/Q202, or CAN wake via U201) wakes the MCU.
 static void customBoardOnStandBy() {
 	powerEnablePin.setValue(0);
+	enterStandby();
 }
 
-// The F4 IWDG cannot be stopped and keeps running in standby, so ~500 ms after mcu_standby()
-// it resets the MCU. Runs before rusEFI arms the IWDG: if that reset hit us while in standby
-// and nothing asked to wake up (no PA0 wakeup event, PA0 low), go straight back to standby.
+// The F4 IWDG cannot be stopped and keeps running in standby, so ~500 ms after going to sleep
+// it resets the MCU. This runs before rusEFI arms the IWDG: after an IWDG reset with no wakeup
+// request (no PA0 wakeup event, PA0 low = key off and CAN idle) go straight back to standby.
 // The IWDG is not running in this boot, so this time the MCU stays asleep until PA0 rises.
 static void customBoardPreHalInit() {
 	RCC->APB1ENR |= RCC_APB1ENR_PWREN;
 	RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
 	(void)RCC->AHB1ENR;
 
-	bool wasInStandby = (PWR->CSR & PWR_CSR_SBF) != 0;
-	bool wakeRequested = (PWR->CSR & PWR_CSR_WUF) != 0 || (GPIOA->IDR & GPIO_IDR_IDR_0) != 0;
+	bootPwrCsr = PWR->CSR;
+	bootPa0High = (GPIOA->IDR & GPIO_IDR_IDR_0) != 0;
+	bool wakeRequested = (bootPwrCsr & PWR_CSR_WUF) != 0 || bootPa0High;
 
-	if (wasInStandby && !wakeRequested && getMCUResetCause() == Reset_Cause_IWatchdog) {
-		stm32_standby();
+	if (!wakeRequested && getMCUResetCause() == Reset_Cause_IWatchdog) {
+		enterStandby();
 	}
 
 	// fresh flags for the next standby / wakeup decision
