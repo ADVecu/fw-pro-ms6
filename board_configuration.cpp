@@ -7,6 +7,15 @@
 
 void setupBoardHardwareTestOverrides();
 
+// PE10 -> /Power/EN switches +5VA (VR, analog buffers, digital inputs, MIC4427) and
+// +3.3VA (on-board wideband). The MCU itself is always powered from 12V_Perm.
+static OutputPin powerEnablePin;
+
+static void customBoardInitHardwareEarly() {
+	powerEnablePin.initPin("Power EN", Gpio::E10);
+	powerEnablePin.setValue(1);
+}
+
 // D208 blue = PE7, D207 green = PD7, D209 yellow = PE8. D206 red = PD4 is the critical LED (board.mk)
 Gpio getCommsLedPin() {
 	return Gpio::E7;
@@ -138,6 +147,7 @@ static void customBoardConfigOverrides() {
 void setup_custom_board_overrides() {
 	setupBoardHardwareTestOverrides();
 
+	custom_board_InitHardwareEarly = customBoardInitHardwareEarly;
 	custom_board_DefaultConfiguration = customBoardDefaultConfiguration;
 	custom_board_ConfigOverrides = customBoardConfigOverrides;
 }
