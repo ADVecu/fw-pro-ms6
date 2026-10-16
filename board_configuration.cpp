@@ -4,6 +4,7 @@
 #include "pch.h"
 #include "board_overrides.h"
 #include "defaults.h"
+#include "settings.h"
 
 void setupBoardHardwareTestOverrides();
 
@@ -15,6 +16,42 @@ static void customBoardInitHardwareEarly() {
 	powerEnablePin.initPin("Power EN", Gpio::E10);
 	powerEnablePin.setValue(1);
 }
+
+// Called by Lua mcu_standby() right before STM32 standby. R306 pulls /Power/EN low once
+// PE10 goes high-Z; PA0 (key via Q201/Q202, or CAN wake via U201) wakes the MCU.
+static void customBoardOnStandBy() {
+	powerEnablePin.setValue(0);
+}
+
+// Battery voltage is sensed on 12V_SW (key line), so it doubles as the key-on signal.
+// Sleeps 5 s after a key-off; if the key was never on since boot (woken by CAN, or on
+// the bench with USB only) it waits 60 s instead so the ECU stays reachable for a while.
+static const char standbyLuaScript[] = R"(
+local KEY_ON_VOLTS = 6
+local SLEEP_AFTER_KEY_OFF_S = 5
+local SLEEP_IF_NEVER_ON_S = 60
+
+local keyOffTimer = Timer.new()
+keyOffTimer:reset()
+local keyWasOn = false
+
+setTickRate(10)
+
+function onTick()
+	local vKey = getSensor("BatteryVoltage") or 0
+	if vKey > KEY_ON_VOLTS then
+		keyWasOn = true
+		keyOffTimer:reset()
+		return
+	end
+
+	local limit = keyWasOn and SLEEP_AFTER_KEY_OFF_S or SLEEP_IF_NEVER_ON_S
+	if keyOffTimer:getElapsedSeconds() > limit then
+		print("PRO-MS6: key off, entering standby")
+		mcu_standby()
+	end
+end
+)";
 
 // D208 blue = PE7, D207 green = PD7, D209 yellow = PE8. D206 red = PD4 is the critical LED (board.mk)
 Gpio getCommsLedPin() {
@@ -129,6 +166,8 @@ static void customBoardDefaultConfiguration() {
 	setupOutputs();
 	setupCommunication();
 	setupSwitchInputs();
+
+	setLuaScript(standbyLuaScript);
 }
 
 // Hard-wired to their drivers, re-applied after every load and TunerStudio write
@@ -148,6 +187,7 @@ void setup_custom_board_overrides() {
 	setupBoardHardwareTestOverrides();
 
 	custom_board_InitHardwareEarly = customBoardInitHardwareEarly;
+	custom_board_onBoardStandBy = customBoardOnStandBy;
 	custom_board_DefaultConfiguration = customBoardDefaultConfiguration;
 	custom_board_ConfigOverrides = customBoardConfigOverrides;
 }

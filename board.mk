@@ -18,6 +18,9 @@ DDEFS += -DLED_CRITICAL_ERROR_BRAIN_PIN=Gpio::D4
 # status LEDs are active-low: +3.3V -> RN201 -> LED -> MCU pin
 DDEFS += -DLED_PIN_MODE=OM_INVERTED
 
+# enables Lua mcu_standby(); PA0 is the wakeup pin (key and CAN wake), not used as ADC here
+DDEFS += -DLUA_STM32_STANDBY=1
+
 # EGT chip
 #un-comment to enable
 #DDEFS += -DEFI_MAX_31855=TRUE
