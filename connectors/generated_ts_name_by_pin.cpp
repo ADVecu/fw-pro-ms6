@@ -6,14 +6,54 @@
 // see comments at declaration in pin_repository.h
 const char* getBoardSpecificPinName(brain_pin_e brainPin) {
 	switch (brainPin) {
-		case Gpio::B14:
-			return "B14 Output";
-		case Gpio::E2:
-			return "VR/Hall 1 (E2)";
-		case Gpio::E3:
-			return "VR/Hall 2 (E3)";
-		case Gpio::E4:
-			return "VR/Hall 3 (E4)";
+		case Gpio::A15:
+			return "AUX 22 - Digital 1";
+		case Gpio::A8:
+			return "L1 - O2 1 Heater";
+		case Gpio::A9:
+			return "M1 - O2 2 Heater";
+		case Gpio::B15:
+			return "AUX 21 - Digital 2";
+		case Gpio::C10:
+			return "J4 - Tachometer";
+		case Gpio::C11:
+			return "K4 - Mode Switch";
+		case Gpio::C13:
+			return "M2 - Ignition 1";
+		case Gpio::C6:
+			return "L3 - Canister";
+		case Gpio::C7:
+			return "L2 - SAS";
+		case Gpio::C8:
+			return "E1 - Main Relay";
+		case Gpio::D10:
+			return "C4 - Fuel Pump";
+		case Gpio::D11:
+			return "C2 - Starter Relay";
+		case Gpio::D12:
+			return "D4 - Fan";
+		case Gpio::D13:
+			return "E4 - Headlight Relay";
+		case Gpio::D15:
+			return "K3 - Check Engine";
+		case Gpio::D2:
+			return "B4 - Injector 2";
+		case Gpio::D3:
+			return "A4 - Injector 1";
+		case Gpio::E0:
+			return "B3 - Clutch";
+		case Gpio::E1:
+			return "F4/G4 - Crank VR";
+		case Gpio::E12:
+			return "H4 - VSS";
+		case Gpio::E13:
+			return "D3 - Neutral";
+		case Gpio::E14:
+			return "F2 - Side Stand";
+		case Gpio::E15:
+			return "A3 - Roll Over";
+		case Gpio::E5:
+			return "M4 - Ignition 2";
 		default:
 			return nullptr;
 	}

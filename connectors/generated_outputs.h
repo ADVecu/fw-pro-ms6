@@ -4,6 +4,34 @@
 #pragma once
 
 Gpio GENERATED_OUTPUTS[] = {
-	Gpio::B14, // B14 Output
-// "B14 Output",
+	Gpio::D3, // A4 - Injector 1
+	Gpio::D2, // B4 - Injector 2
+	Gpio::C13, // M2 - Ignition 1
+	Gpio::E5, // M4 - Ignition 2
+	Gpio::C8, // E1 - Main Relay
+	Gpio::D10, // C4 - Fuel Pump
+	Gpio::D12, // D4 - Fan
+	Gpio::D15, // K3 - Check Engine
+	Gpio::D11, // C2 - Starter Relay
+	Gpio::C10, // J4 - Tachometer
+	Gpio::A8, // L1 - O2 1 Heater
+	Gpio::A9, // M1 - O2 2 Heater
+	Gpio::C6, // L3 - Canister
+	Gpio::C7, // L2 - SAS
+	Gpio::D13, // E4 - Headlight Relay
+// "A4 - Injector 1",
+// "B4 - Injector 2",
+// "M2 - Ignition 1",
+// "M4 - Ignition 2",
+// "E1 - Main Relay",
+// "C4 - Fuel Pump",
+// "D4 - Fan",
+// "K3 - Check Engine",
+// "C2 - Starter Relay",
+// "J4 - Tachometer",
+// "L1 - O2 1 Heater",
+// "M1 - O2 2 Heater",
+// "L3 - Canister",
+// "L2 - SAS",
+// "E4 - Headlight Relay",
 }
