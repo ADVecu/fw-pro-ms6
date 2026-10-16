@@ -8,21 +8,20 @@
 static std::array<Gpio, 0> OUTPUTS = {
 };
 
-static int boardGetMetaOutputsCount() {
+// release_20260812 API: these are weak symbols overridden directly. The custom_board_getMeta*
+// hooks used by fw-custom-example master are missing or declared-only in this release.
+int getBoardMetaOutputsCount() {
     return static_cast<int>(OUTPUTS.size());
 }
 
-static Gpio* boardGetMetaOutputs() {
+Gpio* getBoardMetaOutputs() {
     return OUTPUTS.empty() ? nullptr : OUTPUTS.data();
 }
 
-static int boardGetMetaDcOutputsCount() {
+int getBoardMetaDcOutputsCount() {
     // Set this to the number of DC motor outputs on the board.
     return 0;
 }
 
 void setupBoardHardwareTestOverrides() {
-    custom_board_getMetaOutputsCount = boardGetMetaOutputsCount;
-    custom_board_getMetaOutputs = boardGetMetaOutputs;
-    custom_board_getMetaDcOutputsCount = boardGetMetaDcOutputsCount;
 }
