@@ -41,7 +41,7 @@
 #define ts_show_spi3_pins false
 #define ts_show_software_knock false
 
-! ETB (IFX9201) and idle stepper (DRV8421) pins are pinned in board_configuration.cpp
+! ETB (IFX9201) pins are pinned in board_configuration.cpp; idle stepper pins stay selectable
 #define ts_show_etb_pins false
-#define ts_show_stepper_push_pull false
+#define ts_show_stepper_push_pull true
 #define ts_show_stepper_hbridge false

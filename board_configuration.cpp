@@ -221,6 +221,16 @@ static void setupCommunication() {
 	engineConfiguration->lps25BaroSensorSda = Gpio::B11;
 }
 
+// DRV8421 driven by four push-pull outputs -> J102.A1/A2/B1/B2. Defaults only: the pins are
+// selectable in TunerStudio so the coil order / direction can be changed per valve.
+static void setupIdleStepper() {
+	engineConfiguration->useRawOutputToDriveIdleStepper = true;
+	engineConfiguration->stepper_raw_output[0] = Gpio::E4;	// STEPPER_IN1
+	engineConfiguration->stepper_raw_output[1] = Gpio::E3;	// STEPPER_IN2
+	engineConfiguration->stepper_raw_output[2] = Gpio::E2;	// STEPPER_IN3
+	engineConfiguration->stepper_raw_output[3] = Gpio::B8;	// STEPPER_IN4
+}
+
 static void setupSwitchInputs() {
 	engineConfiguration->clutchDownPin = Gpio::E0;	// J102.B3
 	// Lua only: PE13 neutral, PE14 side stand, PE15 roll over, PC11 mode switch, PA15/PB15 AUX_D1/D2
@@ -237,6 +247,7 @@ static void customBoardDefaultConfiguration() {
 	setupAnalogInputs();
 	setupOutputs();
 	setupCommunication();
+	setupIdleStepper();
 	setupSwitchInputs();
 
 	setLuaScript(standbyLuaScript);
@@ -246,14 +257,6 @@ static void customBoardDefaultConfiguration() {
 static void customBoardConfigOverrides() {
 	// IFX9201: PWM PD14, DIR PC9, DIS PB14 -> J101.8 / J101.14
 	setupTLE9201(/*controlPin*/ Gpio::D14, /*direction*/ Gpio::C9, /*disable*/ Gpio::B14);
-
-	// DRV8421 driven by four push-pull outputs -> J102.A1/A2/B1/B2
-	engineConfiguration->useRawOutputToDriveIdleStepper = true;
-	// coil A polarity swapped (IN2/IN1) so that a higher idle position opens the MS6.0 valve
-	engineConfiguration->stepper_raw_output[0] = Gpio::E3;
-	engineConfiguration->stepper_raw_output[1] = Gpio::E4;
-	engineConfiguration->stepper_raw_output[2] = Gpio::E2;
-	engineConfiguration->stepper_raw_output[3] = Gpio::B8;
 }
 
 void setup_custom_board_overrides() {

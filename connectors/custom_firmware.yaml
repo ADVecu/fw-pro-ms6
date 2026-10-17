@@ -1,7 +1,7 @@
 # PRO-MS6 TunerStudio pin names: "<connector pin> - <function>"
 # J102 main 48-pin pins are named as-is (A4), J101 aux 26-pin pins get an AUX prefix (AUX 15).
-# ETB (PD14/PC9/PB14) and idle stepper (PE4/PE3/PE2/PB8) are hard-wired and pinned in
-# board_configuration.cpp, so they are intentionally left out of the output lists.
+# ETB (PD14/PC9/PB14) is hard-wired and pinned in
+# board_configuration.cpp, so it is intentionally left out of the output lists.
 pins:
 # ---------------- outputs ----------------
   - id: D3
@@ -63,6 +63,23 @@ pins:
   - id: D13
     class: outputs
     ts_name: E4 - Headlight Relay
+
+# idle stepper DRV8421 inputs (valve on J102.A1/A2/B1/B2), selectable to change coil order
+  - id: E4
+    class: outputs
+    ts_name: Idle Stepper IN1
+
+  - id: E3
+    class: outputs
+    ts_name: Idle Stepper IN2
+
+  - id: E2
+    class: outputs
+    ts_name: Idle Stepper IN3
+
+  - id: B8
+    class: outputs
+    ts_name: Idle Stepper IN4
 
 # ---------------- analog inputs ----------------
   - id: EFI_ADC_10
