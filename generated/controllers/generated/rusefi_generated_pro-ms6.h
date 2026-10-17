@@ -1492,8 +1492,8 @@
 #define OUTPUT_CHANNEL_SD_LOGGING_INTERNAL "sd_logging_internal"
 #define OUTPUT_CHANNEL_SD_MSD "sd_msd"
 #define OUTPUT_CHANNEL_SD_PRESENT "sd_present"
-#define output_pin_e_enum 0="NONE",53="A4 - Injector 1",52="B4 - Injector 2",61="C2 - Starter Relay",60="C4 - Fuel Pump",62="D4 - Fan",42="E1 - Main Relay",63="E4 - Headlight Relay",44="J4 - Tachometer",65="K3 - Check Engine",10="L1 - O2 1 Heater",41="L2 - SAS",40="L3 - Canister",11="M1 - O2 2 Heater",47="M2 - Ignition 1",71="M4 - Ignition 2"
-#define output_pin_e_fullenum "NONE","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","L1 - O2 1 Heater","M1 - O2 2 Heater","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","L3 - Canister","L2 - SAS","E1 - Main Relay","INVALID","J4 - Tachometer","INVALID","INVALID","M2 - Ignition 1","INVALID","INVALID","INVALID","INVALID","B4 - Injector 2","A4 - Injector 1","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","C4 - Fuel Pump","C2 - Starter Relay","D4 - Fan","E4 - Headlight Relay","INVALID","K3 - Check Engine","INVALID","INVALID","INVALID","INVALID","INVALID","M4 - Ignition 2","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID"
+#define output_pin_e_enum 0="NONE",53="A4 - Injector 1",52="B4 - Injector 2",61="C2 - Starter Relay",60="C4 - Fuel Pump",62="D4 - Fan",42="E1 - Main Relay",63="E4 - Headlight Relay",70="Idle Stepper IN1",69="Idle Stepper IN2",68="Idle Stepper IN3",26="Idle Stepper IN4",44="J4 - Tachometer",65="K3 - Check Engine",10="L1 - O2 1 Heater",41="L2 - SAS",40="L3 - Canister",11="M1 - O2 2 Heater",47="M2 - Ignition 1",71="M4 - Ignition 2"
+#define output_pin_e_fullenum "NONE","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","L1 - O2 1 Heater","M1 - O2 2 Heater","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","Idle Stepper IN4","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","L3 - Canister","L2 - SAS","E1 - Main Relay","INVALID","J4 - Tachometer","INVALID","INVALID","M2 - Ignition 1","INVALID","INVALID","INVALID","INVALID","B4 - Injector 2","A4 - Injector 1","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","C4 - Fuel Pump","C2 - Starter Relay","D4 - Fan","E4 - Headlight Relay","INVALID","K3 - Check Engine","INVALID","INVALID","Idle Stepper IN3","Idle Stepper IN2","Idle Stepper IN1","M4 - Ignition 2","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID","INVALID"
 #define PACK_ADD_TEMPERATURE 40
 #define PACK_MULT_AFR 1000
 #define PACK_MULT_AFR_CFG 10
@@ -1642,7 +1642,7 @@
 #define SentInput_NONE 0
 #define show_tcu_gauges false
 #define show_vvt_output_pin true
-#define SIGNATURE_HASH 1071445058
+#define SIGNATURE_HASH 3706671045
 #define SIMULATOR_TUNE_BIN_FILE_NAME "generated/simulator_tune_image.bin"
 #define SIMULATOR_TUNE_BIN_FILE_NAME_PREFIX "generated/simulator_tune_image"
 #define SIMULATOR_TUNE_BIN_FILE_NAME_SUFFIX ".bin"
@@ -2236,7 +2236,7 @@
 #define ts_show_startup_map_baro_grab true
 #define ts_show_status_leds true
 #define ts_show_stepper_hbridge false
-#define ts_show_stepper_push_pull false
+#define ts_show_stepper_push_pull true
 #define ts_show_strokes true
 #define ts_show_sync_cam true
 #define ts_show_tachometer true
@@ -2282,7 +2282,7 @@
 #define ts_show_wbo_canbus_index true
 #define ts_show_wbo_canbus_set_index true
 #define ts_show_wbo_canbus_set_type false
-#define TS_SIGNATURE "rusEFI main.2026.10.17.pro-ms6.1071445058"
+#define TS_SIGNATURE "rusEFI main.2026.10.17.pro-ms6.3706671045"
 #define TS_SIMULATE_CAN '>'
 #define TS_SIMULATE_CAN_char >
 #define TS_TEST_COMMAND 't'
