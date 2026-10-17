@@ -91,6 +91,7 @@ static void customBoardPreHalInit() {
 // Battery voltage is sensed on 12V_SW (key line), so it doubles as the key-on signal.
 // Sleeps 5 s after a key-off; if the key was never on since boot (woken by CAN, or on
 // the bench with USB only) it waits 60 s instead so the ECU stays reachable for a while.
+// Never sleeps while a PC has the USB enumerated.
 static const char standbyLuaScript[] = R"(
 local KEY_ON_VOLTS = 6
 local SLEEP_AFTER_KEY_OFF_S = 5
@@ -106,6 +107,12 @@ function onTick()
 	local vKey = getSensor("BatteryVoltage") or 0
 	if vKey > KEY_ON_VOLTS then
 		keyWasOn = true
+		keyOffTimer:reset()
+		return
+	end
+
+	-- PC connected over USB: stay awake, restart the countdown once it is unplugged
+	if getOutput("isUsbConnected") == 1 then
 		keyOffTimer:reset()
 		return
 	end
