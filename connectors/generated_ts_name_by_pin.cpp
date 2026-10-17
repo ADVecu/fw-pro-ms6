@@ -14,6 +14,8 @@ const char* getBoardSpecificPinName(brain_pin_e brainPin) {
 			return "M1 - O2 2 Heater";
 		case Gpio::B15:
 			return "AUX 21 - Digital 2";
+		case Gpio::B8:
+			return "Idle Stepper IN4";
 		case Gpio::C10:
 			return "J4 - Tachometer";
 		case Gpio::C11:
@@ -52,6 +54,12 @@ const char* getBoardSpecificPinName(brain_pin_e brainPin) {
 			return "F2 - Side Stand";
 		case Gpio::E15:
 			return "A3 - Roll Over";
+		case Gpio::E2:
+			return "Idle Stepper IN3";
+		case Gpio::E3:
+			return "Idle Stepper IN2";
+		case Gpio::E4:
+			return "Idle Stepper IN1";
 		case Gpio::E5:
 			return "M4 - Ignition 2";
 		default:

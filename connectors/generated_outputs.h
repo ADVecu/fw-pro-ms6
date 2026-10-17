@@ -19,6 +19,10 @@ Gpio GENERATED_OUTPUTS[] = {
 	Gpio::C6, // L3 - Canister
 	Gpio::C7, // L2 - SAS
 	Gpio::D13, // E4 - Headlight Relay
+	Gpio::E4, // Idle Stepper IN1
+	Gpio::E3, // Idle Stepper IN2
+	Gpio::E2, // Idle Stepper IN3
+	Gpio::B8, // Idle Stepper IN4
 // "A4 - Injector 1",
 // "B4 - Injector 2",
 // "M2 - Ignition 1",
@@ -34,4 +38,8 @@ Gpio GENERATED_OUTPUTS[] = {
 // "L3 - Canister",
 // "L2 - SAS",
 // "E4 - Headlight Relay",
+// "Idle Stepper IN1",
+// "Idle Stepper IN2",
+// "Idle Stepper IN3",
+// "Idle Stepper IN4",
 }
